@@ -1,0 +1,50 @@
+
+CODE ->
+
+Semaphores->
+
+wrt = 1, mutex = 1, ls = 1
+
+counter = 0 (Shared variable)
+
+Reader's Process ->
+
+while(true){
+
+	wait(ls);
+	wait(mutex);
+	counter++;
+
+	if(counter == 1) wait(wrt);
+
+	signal(mutex);
+	signal(ls);
+
+	/*
+	CRITICAL SECTION
+	*/
+
+	wait(mutex);
+	counter--;
+
+	if(counter == 0) signal(wrt);
+
+	signal(mutex);
+
+}
+
+Writer's Process ->
+
+while(true){
+
+	wait(ls);
+	wait(wrt);
+
+	/*
+	CRITICAL SECTION
+	*/
+
+	signal(wrt);
+	signal(ls);
+
+}
